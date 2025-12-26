@@ -1,0 +1,57 @@
+---
+- name: Delete AAP controller resources
+  hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars:
+    organization: Default
+
+    controller_project_name: "basic-project"
+    job_template_name: "basic-template"
+    inventory_name: "localhost-inventory"
+
+    controller_host: "{{ lookup('env', 'CONTROLLER_HOST') }}"
+    controller_username: "{{ lookup('env', 'CONTROLLER_USERNAME') }}"
+    controller_password: "{{ lookup('env', 'CONTROLLER_PASSWORD') }}"
+    controller_validate_certs: false
+  tasks:
+    - name: Delete Job Template
+      ansible.controller.job_template:
+        name: "{{ job_template_name }}"
+        organization: "{{ organization }}"
+        state: absent
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+
+    - name: Delete localhost host
+      ansible.controller.host:
+        name: "localhost"
+        inventory: "{{ inventory_name }}"
+        state: absent
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+
+    - name: Delete Inventory
+      ansible.controller.inventory:
+        name: "{{ inventory_name }}"
+        organization: "{{ organization }}"
+        state: absent
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+
+    - name: Delete basic project ref GitHub repo playbook
+      ansible.controller.project:
+        name: "{{ controller_project_name }}"
+        organization: "{{ organization }}"
+        state: absent
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"

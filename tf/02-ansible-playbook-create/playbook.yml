@@ -1,0 +1,72 @@
+---
+- name: Configure HashiCorp Job Template that executes a conditional playbook on localhost inventory
+  hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars:
+    organization: Default
+
+    controller_project_name: "basic-project"
+    job_template_name: "basic-template"
+    inventory_name: "localhost-inventory"
+
+    controller_host: "{{ lookup('env', 'CONTROLLER_HOST') }}"
+    controller_username: "{{ lookup('env', 'CONTROLLER_USERNAME') }}"
+    controller_password: "{{ lookup('env', 'CONTROLLER_PASSWORD') }}"
+    controller_validate_certs: false
+  tasks:
+    - name: Create basic project ref GitHub repo playbook
+      ansible.controller.project:
+        name: "{{ controller_project_name }}"
+        organization: "{{ organization }}"
+        scm_type: "git"
+        scm_url: "{{ scm_url }}"
+        scm_branch: "main"
+        scm_update_on_launch: true
+        state: present
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+        wait: true
+
+    - name: Create Inventory
+      ansible.controller.inventory:
+        name: "{{ inventory_name }}"
+        organization: "{{ organization }}"
+        state: present
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+
+    - name: Add localhost host to inventory
+      ansible.controller.host:
+        name: "localhost"
+        inventory: "{{ inventory_name }}"
+        variables:
+          ansible_connection: local
+          ansible_python_interpreter: '{% raw %}{{ ansible_playbook_python }}{% endraw %}'
+        state: present
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+
+    - name: Create Job Template
+      ansible.controller.job_template:
+        name: "{{ job_template_name }}"
+        description: "Job template that runs a playbook against a host within a specified inventory"
+        organization: "{{ organization }}"
+        project: "{{ controller_project_name }}"
+        playbook: "{{ playbook_name }}"
+        inventory: "{{ inventory_name }}"
+        job_type: "run"
+        survey_enabled: false
+        ask_variables_on_launch: true
+        state: present
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"

@@ -1,0 +1,5 @@
+tf_organization_name = "replace"
+github_token         = "replace"
+aap_hostname         = "https://replace"
+aap_username         = "replace"
+aap_password         = "replace"

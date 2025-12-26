@@ -1,0 +1,20 @@
+---
+- name: Playbook that succeeds or fails depending on variable value from TF
+  hosts: all
+  tasks:
+    - name: Print Hello World Message
+      ansible.builtin.debug:
+        msg: "Hello, world!"
+
+    - name: Print variable from aap_job_launch action
+      ansible.builtin.debug:
+        msg: "Variable from TF aap_job_launch: {{ var_from_tf_aap_job_launch | default('not defined') }}"
+
+    - name: Pause for 60 seconds to test aap_job_launch wait
+      ansible.builtin.pause:
+        seconds: 60
+
+    - name: Verify var_from_tf_aap_job_launch status
+      ansible.builtin.fail:
+        msg: "The job status variable indicates 'fail'. Aborting playbook execution as required."
+      when: var_from_tf_aap_job_launch == "fail"

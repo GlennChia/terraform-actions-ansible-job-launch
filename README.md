@@ -297,3 +297,15 @@ Step 2: In [tf/04-ansible-playbook-cleanup](./tf/04-ansible-playbook-cleanup/) r
 ```bash
 ansible-playbook -e playbook.yml
 ```
+
+Step 3: In [tf/03-tf-workspaces](./tf/03-tf-workspaces/) directory, run destroy. Review the destroy output before approving.
+
+```bash
+terraform destroy
+```
+
+Step 4: In [tf/01-tf-github-repo-playbook](./tf/01-tf-github-repo-playbook/) directory, run destroy. Review the destroy output before approving.
+
+```bash
+terraform destroy
+```

@@ -65,6 +65,9 @@ export TFE_TOKEN=example
 
 Step 6: In the [tf/03-tf-workspaces/](./tf/03-tf-workspaces/) directory, copy [tf/03-tf-workspaces/terraform.tfvars.example](./tf/03-tf-workspaces/terraform.tfvars.example) to `terraform.tfvars` and change the variables accordingly.
 
+> [!NOTE]
+> The variable `aap_hostname` must have the protocol. For example, use `https://aap.example.com` instead of `aap.example.com`
+
 Step 7: In the [tf/03-tf-workspaces/](./tf/03-tf-workspaces/) directory, run an apply, review the plan output, and approve the plan accordingly.
 
 ```bash

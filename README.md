@@ -1,5 +1,7 @@
 # Terraform Actions with Ansible Automation Platform `aap_job_launch`
 
+This repository demonstrates how to use the Terraform action `aap_job_launch` to run job templates on Ansible Automation Platform (AAP). It shows 4 different scenarios with various `wait_for_completion` and statuses. Read the accompanying [Medium blog post](https://medium.com/hashicorp-engineering/launch-jobs-on-ansible-automation-platform-with-terraform-actions-a08e7179b1fe) for more details about the integration and additional screenshots.
+
 # 1. Architecture
 
 High-level architecture
